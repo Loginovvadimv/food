@@ -41,7 +41,7 @@ tabsParent.addEventListener('click', function(event) {
   
   // Timer
 
-  const deadline = '2022-06-11';
+  const deadline = '2023-06-11';
 
   function getTimeRemaining(endtime) {
       const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -93,5 +93,35 @@ tabsParent.addEventListener('click', function(event) {
   }
 
   setClock('.timer', deadline);
+
+// modal
+    const modalTriger = document.querySelectorAll('[data-modal]');
+    const modalClose = document.querySelector(['[data-close]']);
+    const modal = document.querySelector('.modal');
+
+    function closeModal() {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    
+    modalTriger.forEach(item => {
+        item.addEventListener('click', (event) => {
+           modal.style.display = 'block';
+           document.body.style.overflow = 'hidden';
+        })
+    });
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (event) => {
+        let target = event.target;
+        if (target === modal) {
+            closeModal();
+        }
+    })
+
+    document.addEventListener('keydown', (event) => {
+      if (event.code === 'Escape') {
+        closeModal();
+      }
+    })
 
 });
