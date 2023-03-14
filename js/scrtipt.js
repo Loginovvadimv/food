@@ -94,34 +94,47 @@ tabsParent.addEventListener('click', function(event) {
 
   setClock('.timer', deadline);
 
-// modal
-    const modalTriger = document.querySelectorAll('[data-modal]');
-    const modalClose = document.querySelector(['[data-close]']);
-    const modal = document.querySelector('.modal');
+  //modal
 
-    function closeModal() {
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-    }
-    
-    modalTriger.forEach(item => {
-        item.addEventListener('click', (event) => {
-           modal.style.display = 'block';
-           document.body.style.overflow = 'hidden';
-        })
-    });
-    modalClose.addEventListener('click', closeModal);
-    modal.addEventListener('click', (event) => {
-        let target = event.target;
-        if (target === modal) {
-            closeModal();
-        }
-    })
+  const modalTriger = document.querySelectorAll('[data-modal]');
+  const modalClose = document.querySelector('[data-close]');
+  const modal = document.querySelector('.modal');
 
-    document.addEventListener('keydown', (event) => {
-      if (event.code === 'Escape') {
+  function closeModal() {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function openModal() {
+    modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        clearInterval(modalTimerId);
+  }
+
+  modalTriger.forEach(item => {
+    item.addEventListener('click', openModal);
+  });
+  modalClose.addEventListener('click', closeModal);
+
+  modal.addEventListener('click', (event) => {
+    if(event.target === modal) {
         closeModal();
-      }
-    })
+    }
+  })
+  document.addEventListener('keydown', (event) => {
+        if (event.code === 'Escape') {
+        closeModal();
+    }
+  })
 
+  function showModalByScroll() {
+    if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1) {
+        openModal();
+    }
+    window.removeEventListener('scroll', showModalByScroll);
+  }
+
+  const modalTimerId = setTimeout(openModal, 20000);
+
+  window.addEventListener('scroll', showModalByScroll);
 });
